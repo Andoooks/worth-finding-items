@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover useful products, practical buying guides, and thoughtful recommendations at Worth Finding Items.">
+  <title>Worth Finding Items | Useful Products. Smarter Choices.</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#home">
+        <span class="brand-mark">✳</span>
+        <span>
+          <strong>Worth Finding Items</strong>
+          <small>REAL REVIEWS · USEFUL GUIDES · BETTER CHOICES</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle"
+        aria-label="Toggle navigation" aria-expanded="false">
+        ☰
+      </button>
+
+      <nav class="navigation" id="navigation">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#articles" class="nav-link" data-category="Tech">Tech</a>
+        <a href="#articles" class="nav-link" data-category="Home & Living">Home & Living</a>
+        <a href="#articles" class="nav-link" data-category="Lifestyle">Lifestyle</a>
+        <a href="#articles" class="nav-link" data-category="Buying Guides">Buying Guides</a>
+        <a href="#about" class="nav-link">About</a>
+      </nav>
+
+      <button class="search-toggle" id="searchToggle"
+        aria-label="Open search">⌕</button>
+    </div>
+
+    <div class="search-panel" id="searchPanel" hidden>
+      <label for="searchInput">Search articles</label>
+      <input id="searchInput" type="search"
+        placeholder="Try headphones or home organization...">
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">WELCOME TO WORTH FINDING ITEMS</p>
+          <h1>Useful Products.<br>Smarter Choices.</h1>
+          <p class="hero-description">
+            We share helpful buying guides, product comparisons,
+            and practical recommendations to make everyday shopping
+            easier, better, and more enjoyable.
+          </p>
+          <a href="#articles" class="button button-primary">
+            Explore Our Latest Guides <span>→</span>
+          </a>
+        </div>
+        <div class="hero-image" role="img"
+          aria-label="Everyday technology and lifestyle essentials"></div>
+      </div>
+    </section>
+
+    <section class="categories section-container" aria-label="Categories">
+      <button class="category-item" data-category="Tech">
+        <span class="category-icon">⌨</span>
+        <strong>Tech</strong>
+        <span>Explore →</span>
+      </button>
+      <button class="category-item" data-category="Home & Living">
+        <span class="category-icon">⌂</span>
+        <strong>Home & Living</strong>
+        <span>Explore →</span>
+      </button>
+      <button class="category-item" data-category="Lifestyle">
+        <span class="category-icon">♧</span>
+        <strong>Lifestyle</strong>
+        <span>Explore →</span>
+      </button>
+      <button class="category-item" data-category="Buying Guides">
+        <span class="category-icon">◇</span>
+        <strong>Buying Guides</strong>
+        <span>Explore →</span>
+      </button>
+    </section>
+
+    <section class="content-layout section-container" id="articles">
+      <div class="articles-area">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">THE LATEST</p>
+            <h2 id="articleHeading">Featured Articles</h2>
+          </div>
+          <button class="text-button" id="showAll">View all →</button>
+        </div>
+
+        <p id="resultMessage" class="result-message" aria-live="polite"></p>
+
+        <div class="article-grid" id="articleGrid">
+
+          <article class="article-card" data-category="Tech">
+            <a class="article-image" href="#"
+              aria-label="Read desk accessories guide">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=700&q=80"
+                alt="Laptop and workspace accessories" loading="lazy">
+            </a>
+            <div class="article-content">
+              <span class="tag">TECH</span>
+              <h3><a href="#">7 Desk Accessories That Can Make Your Workspace More Comfortable</a></h3>
+              <p>Explore practical accessories that can help make your workspace more organized and comfortable.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="article-card" data-category="Home & Living">
+            <a class="article-image" href="#"
+              aria-label="Read home organization guide">
+              <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=700&q=80"
+                alt="Organized home storage" loading="lazy">
+            </a>
+            <div class="article-content">
+              <span class="tag">HOME & LIVING</span>
+              <h3><a href="#">Small Home Organization Ideas for a Less Cluttered Space</a></h3>
+              <p>Discover practical storage ideas to make the most of your space, even in small homes.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="article-card" data-category="Tech">
+            <a class="article-image" href="#"
+              aria-label="Read headphone buying guide">
+              <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80"
+                alt="Audio headphones" loading="lazy">
+            </a>
+            <div class="article-content">
+              <span class="tag">TECH</span>
+              <h3><a href="#">What to Look for When Buying Wireless Headphones</a></h3>
+              <p>Learn about comfort, battery life, sound quality, and features before choosing headphones.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+          <article class="article-card" data-category="Lifestyle">
+            <a class="article-image" href="#"
+              aria-label="Read travel essentials guide">
+              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"
+                alt="Travel backpack and essentials" loading="lazy">
+            </a>
+            <div class="article-content">
+              <span class="tag">LIFESTYLE</span>
+              <h3><a href="#">Travel Organization Essentials for Short Trips</a></h3>
+              <p>Explore packing and storage essentials that can help keep your next trip organized.</p>
+              <a href="#" class="read-more">Read More →</a>
+            </div>
+          </article>
+
+        </div>
+
+        <p id="emptyMessage" class="empty-message" hidden>
+          No matching articles found. Try a different search.
+        </p>
+      </div>
+
+      <aside class="sidebar">
+        <section class="sidebar-card about-card" id="about">
+          <div class="about-image" role="img"
+            aria-label="A plant and coffee on a desk"></div>
+          <div>
+            <h3>Welcome to Worth Finding Items!</h3>
+            <p>
+              We're here to help you explore practical products,
+              useful ideas, and thoughtful buying guides for everyday life.
+            </p>
+            <a href="#about-details" class="read-more">Learn More About Us →</a>
+          </div>
+        </section>
+
+        <section class="sidebar-card disclosure-card">
+          <h3>Our Promise</h3>
+          <p>
+            We aim to provide useful information and honest,
+            research-based recommendations to help you make informed choices.
+          </p>
+          <a href="#disclosure" class="read-more">Affiliate Disclosure →</a>
+        </section>
+      </aside>
+    </section>
+
+    <section class="values-strip">
+      <div class="values-inner">
+        <div class="value-item"><span>♧</span><p><strong>Honest Research</strong><br>Helpful information</p></div>
+        <div class="value-item"><span>♧</span><p><strong>Practical Advice</strong><br>For everyday life</p></div>
+        <div class="value-item"><span>♡</span><p><strong>Thoughtful Choices</strong><br>Products that add value</p></div>
+        <div class="value-item"><span>✓</span><p><strong>Better Decisions</strong><br>Shop with confidence</p></div>
+      </div>
+    </section>
+
+    <section class="section-container information-pages" id="about-details">
+      <h2>About Worth Finding Items</h2>
+      <p>
+        Worth Finding Items shares practical buying guides, product
+        comparisons, and useful ideas across technology, home and living,
+        and lifestyle categories. Our goal is to help readers research
+        their options and make informed purchasing decisions.
+      </p>
+    </section>
+
+    <section class="section-container information-pages" id="disclosure">
+      <h2>Affiliate Disclosure</h2>
+      <p>
+        As an Amazon Associate I earn from qualifying purchases.
+        Some links on this website may be affiliate links. If you purchase
+        through these links, we may earn a commission at no additional
+        cost to you.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <a class="footer-brand" href="#home">Worth Finding Items</a>
+      <p>Useful products. Smarter choices.</p>
+      <div class="footer-links">
+        <a href="#about-details">About</a>
+        <a href="#disclosure">Affiliate Disclosure</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:YOUR_EMAIL@example.com">Contact</a>
+      </div>
+      <p class="copyright">© <span id="currentYear"></span> Worth Finding Items. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
