@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Admin | Worth Finding Items</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js" defer></script>
+</head>
+<body class="admin-body">
+  <header class="site-header admin-header">
+    <a class="brand" href="index.html"><span class="brand-mark">✳</span><span><strong>Worth Finding Items</strong><small>PRIVATE CONTENT MANAGEMENT</small></span></a>
+    <a class="back-link" href="index.html">← View public site</a>
+  </header>
+  <main class="admin-main">
+    <section id="setupWarning" class="notice" hidden>
+      <h2>Connect your database first</h2>
+      <p>Update <code>config.js</code> with your Supabase project URL and anon/publishable key, then run the SQL setup file. See <code>README.md</code>.</p>
+    </section>
+    <section id="loginPanel" class="auth-panel">
+      <p class="eyebrow">ADMIN ACCESS</p><h1>Sign in to manage your finds.</h1>
+      <p class="muted">This area is for the site owner only. Visitors can browse published products but cannot edit them.</p>
+      <form id="loginForm">
+        <label for="email">Admin email</label><input id="email" type="email" autocomplete="username" required>
+        <label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required>
+        <button class="button button-primary" type="submit">Sign in <span>→</span></button>
+        <p id="loginMessage" class="form-message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="dashboard-heading">
+        <div><p class="eyebrow">CONTENT MANAGEMENT</p><h1>Your product finds</h1><p class="muted">Add, edit, publish, unpublish, or delete product cards.</p></div>
+        <button id="signOut" class="button button-secondary" type="button">Sign out</button>
+      </div>
+      <div class="dashboard-layout">
+        <form id="productForm" class="editor-panel">
+          <div class="editor-title"><h2 id="formHeading">Add a product</h2><button type="button" id="resetForm" class="text-button">Clear form</button></div>
+          <input id="productId" type="hidden">
+          <label for="title">Product title *</label><input id="title" maxlength="180" required>
+          <label for="category">Category *</label>
+          <select id="category" required>
+            <option>Home & Living</option><option>Kitchen</option><option>Gifts</option><option>Fashion & Fitness</option><option>Outdoor & Camping</option><option>Other</option>
+          </select>
+          <label for="description">Description *</label><textarea id="description" rows="5" maxlength="2000" required placeholder="Write a useful, original description. Avoid unsupported claims."></textarea>
+          <label for="imageUrl">Product image URL</label><input id="imageUrl" type="url" placeholder="https://..." >
+          <small class="hint">Use an image you are authorized to display, such as an image permitted under Amazon's rules.</small>
+          <label for="amazonUrl">Amazon affiliate URL *</label><input id="amazonUrl" type="url" placeholder="https://www.amazon.com/..." required>
+          <small class="hint">Use your tagged Amazon.com Associates link. Do not use your own link to make purchases.</small>
+          <label for="keywords">Search keywords</label><input id="keywords" maxlength="500" placeholder="bathroom storage, shower caddy, small bathroom">
+          <div class="toggle-row"><label for="featured">Featured product</label><input id="featured" type="checkbox"></div>
+          <div class="toggle-row"><label for="published">Published on public site</label><input id="published" type="checkbox" checked></div>
+          <button class="button button-primary save-button" type="submit">Save product</button>
+          <p id="formMessage" class="form-message" role="status"></p>
+        </form>
+        <section class="products-panel">
+          <div class="editor-title"><h2>Product library</h2><span id="productCount" class="count-pill">0 products</span></div>
+          <label for="adminSearch" class="visually-hidden">Search product library</label><input id="adminSearch" type="search" placeholder="Search your products...">
+          <p id="listMessage" class="form-message" role="status"></p>
+          <div id="adminProductList" class="admin-product-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
