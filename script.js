@@ -1,133 +1,83 @@
+(() => {
+  const config = window.WFI_CONFIG || {};
+  const clientReady = config.SUPABASE_URL && config.SUPABASE_ANON_KEY &&
+    !config.SUPABASE_URL.includes("YOUR-PROJECT") &&
+    !config.SUPABASE_ANON_KEY.includes("YOUR_SUPABASE");
+  const grid = document.getElementById("productGrid");
+  const status = document.getElementById("statusMessage");
+  const empty = document.getElementById("emptyState");
+  const search = document.getElementById("searchInput");
+  const chips = [...document.querySelectorAll(".category-chip")];
+  let products = [];
+  let activeCategory = "All";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const menuToggle = document.getElementById("menuToggle");
-  const navigation = document.getElementById("navigation");
-  const searchToggle = document.getElementById("searchToggle");
-  const searchPanel = document.getElementById("searchPanel");
-  const searchInput = document.getElementById("searchInput");
-  const articleGrid = document.getElementById("articleGrid");
-  const articleCards = [...document.querySelectorAll(".article-card")];
-  const categoryButtons = document.querySelectorAll("[data-category]");
-  const navLinks = document.querySelectorAll(".nav-link");
-  const heading = document.getElementById("articleHeading");
-  const resultMessage = document.getElementById("resultMessage");
-  const emptyMessage = document.getElementById("emptyMessage");
-  const showAll = document.getElementById("showAll");
-
-  let selectedCategory = "";
-  let searchTerm = "";
-
-  // Mobile navigation
-  menuToggle.addEventListener("click", () => {
-    const isOpen = navigation.classList.toggle("open");
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
-    menuToggle.textContent = isOpen ? "×" : "☰";
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+  document.getElementById("menuToggle").addEventListener("click", () => {
+    const nav = document.getElementById("navigation");
+    const open = nav.classList.toggle("open");
+    document.getElementById("menuToggle").setAttribute("aria-expanded", String(open));
   });
+  chips.forEach(chip => chip.addEventListener("click", () => {
+    activeCategory = chip.dataset.category;
+    chips.forEach(item => item.classList.toggle("active", item === chip));
+    render();
+  }));
+  search.addEventListener("input", render);
 
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      navigation.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.textContent = "☰";
+  function escapeHTML(value = "") {
+    return String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  }
+  function safeUrl(value) {
+    try { const u = new URL(value); return ["http:","https:"].includes(u.protocol) ? u.href : ""; }
+    catch { return ""; }
+  }
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const shown = products.filter(p => {
+      const matchCategory = activeCategory === "All" || p.category === activeCategory;
+      const haystack = `${p.title || ""} ${p.description || ""} ${p.keywords || ""} ${p.category || ""}`.toLowerCase();
+      return matchCategory && haystack.includes(q);
     });
-  });
-
-  // Search panel
-  searchToggle.addEventListener("click", () => {
-    searchPanel.hidden = !searchPanel.hidden;
-
-    if (!searchPanel.hidden) {
-      searchInput.focus();
-    } else {
-      searchInput.value = "";
-      searchTerm = "";
-      updateArticles();
-    }
-  });
-
-  // Filter and search articles
-  function updateArticles() {
-    let visibleCount = 0;
-
-    articleCards.forEach(card => {
-      const category = card.dataset.category;
-      const text = card.textContent.toLowerCase();
-      const matchesCategory =
-        !selectedCategory || category === selectedCategory;
-      const matchesSearch = text.includes(searchTerm);
-
-      const visible = matchesCategory && matchesSearch;
-      card.hidden = !visible;
-
-      if (visible) visibleCount++;
-    });
-
-    if (selectedCategory) {
-      heading.textContent = selectedCategory;
-    } else {
-      heading.textContent = searchTerm
-        ? "Search Results"
-        : "Featured Articles";
-    }
-
-    resultMessage.textContent =
-      searchTerm || selectedCategory
-        ? `${visibleCount} article${visibleCount === 1 ? "" : "s"} found`
-        : "";
-
-    emptyMessage.hidden = visibleCount !== 0;
-    articleGrid.hidden = visibleCount === 0;
+    grid.innerHTML = shown.map(p => {
+      const image = safeUrl(p.image_url);
+      const amazon = safeUrl(p.amazon_url);
+      return `<article class="product-card">
+        ${image ? `<img class="product-image" src="${escapeHTML(image)}" alt="${escapeHTML(p.title)}" loading="lazy" referrerpolicy="no-referrer">` : `<div class="product-image-placeholder">${escapeHTML(p.title)}</div>`}
+        <div class="product-card-content">
+          ${p.featured ? '<span class="featured-label">FEATURED FIND</span>' : ''}
+          <span class="product-category">${escapeHTML(p.category || "Other")}</span>
+          <h3>${escapeHTML(p.title)}</h3>
+          <p>${escapeHTML(p.description)}</p>
+          <div class="product-actions">${amazon ? `<a class="amazon-link" href="${escapeHTML(amazon)}" target="_blank" rel="sponsored nofollow noopener">View on Amazon ↗</a>` : '<span class="status-message">Product link coming soon</span>'}</div>
+        </div>
+      </article>`;
+    }).join("");
+    status.hidden = shown.length > 0;
+    status.textContent = products.length ? "" : "Product finds will appear here soon.";
+    empty.hidden = shown.length !== 0 || products.length === 0;
   }
 
-  searchInput.addEventListener("input", event => {
-    searchTerm = event.target.value.trim().toLowerCase();
-    updateArticles();
-  });
-
-  categoryButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      selectedCategory = button.dataset.category;
-      searchTerm = "";
-      searchInput.value = "";
-
-      updateArticles();
-
-      document.getElementById("articles").scrollIntoView({
-        behavior: "smooth"
-      });
-    });
-  });
-
-  showAll.addEventListener("click", () => {
-    selectedCategory = "";
-    searchTerm = "";
-    searchInput.value = "";
-    updateArticles();
-  });
-
-  // Highlight selected navigation category
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      navLinks.forEach(item => item.classList.remove("active"));
-      link.classList.add("active");
-
-      if (link.dataset.category) {
-        selectedCategory = link.dataset.category;
-        searchTerm = "";
-        searchInput.value = "";
-        updateArticles();
-      } else if (link.getAttribute("href") === "#home") {
-        selectedCategory = "";
-        searchTerm = "";
-        searchInput.value = "";
-        updateArticles();
-      }
-    });
-  });
-
-  // Automatically update copyright year
-  document.getElementById("currentYear").textContent =
-    new Date().getFullYear();
-
-  updateArticles();
-});
+  async function init() {
+    if (!clientReady || !window.supabase) {
+      products = [];
+      status.hidden = false;
+      status.textContent = "The product database has not been connected yet. Follow the setup guide to add your Supabase project settings.";
+      render();
+      return;
+    }
+    try {
+      const client = window.supabase.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
+      const { data, error } = await client.from("products")
+        .select("id,title,description,category,image_url,amazon_url,keywords,featured,created_at")
+        .eq("published", true).order("featured", { ascending: false }).order("created_at", { ascending: false });
+      if (error) throw error;
+      products = data || [];
+      render();
+    } catch (error) {
+      status.hidden = false;
+      status.textContent = "We couldn't load the product finds right now. Please try again later.";
+      console.error("Product load failed:", error.message);
+    }
+  }
+  init();
+})();
